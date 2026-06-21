@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scalaversion: ["2.11.12", "2.12.10", "2.13.1"]
+        scalaversion: ["2.12.21", "2.11.12", "2.13.18", "3.3.8"]
         jsdomversion: ["10.0.0", "16.0.0", "21.0.0", "27.0.0"]
         include:
           - jsdomversion: 10.0.0
@@ -44,4 +44,7 @@ jobs:
       - name: Doc generation
         run: sbt "++${{ matrix.scalaversion }}" scalajs-env-jsdom-nodejs/doc
       - name: Integration tests
+        # scala-js 1.13.0 dropped 2.11 support,
+        # while later version is required for testing on scala3.
+        if: matrix.scalaversion != '2.11.12'
         run: sbt "++${{ matrix.scalaversion }}" test-project/run test-project/test

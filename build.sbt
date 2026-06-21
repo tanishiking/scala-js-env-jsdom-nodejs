@@ -1,9 +1,13 @@
 inThisBuild(Seq(
   organization := "org.scala-js",
 
-  crossScalaVersions := Seq("2.12.10", "2.11.12", "2.13.1"),
+  crossScalaVersions := Seq("2.12.21", "2.11.12", "2.13.18", "3.3.8"),
   scalaVersion := crossScalaVersions.value.head,
-  scalacOptions ++= Seq("-deprecation", "-feature", "-Xfatal-warnings"),
+  scalacOptions ++= Seq("-deprecation", "-feature"),
+  scalacOptions ++= {
+    if (scalaVersion.value.startsWith("3.")) Seq("-Werror")
+    else Seq("-Xfatal-warnings")
+  },
 
   homepage := Some(url("https://www.scala-js.org/")),
   licenses += ("BSD New",
@@ -14,6 +18,8 @@ inThisBuild(Seq(
       Some("scm:git:git@github.com:scala-js/scala-js-env-jsdom-nodejs.git"))),
   versionScheme := Some("semver-spec"),
 ))
+
+val jsEnvsVersion = "1.6.0"
 
 val commonSettings = Def.settings(
   // Scaladoc linking
@@ -57,11 +63,11 @@ lazy val `scalajs-env-jsdom-nodejs`: Project = project.in(file("jsdom-nodejs-env
     commonSettings,
 
     libraryDependencies ++= Seq(
-      "org.scala-js" %% "scalajs-js-envs" % scalaJSVersion,
-      "org.scala-js" %% "scalajs-env-nodejs" % scalaJSVersion,
+      "org.scala-js" %% "scalajs-js-envs" % jsEnvsVersion,
+      "org.scala-js" %% "scalajs-env-nodejs" % jsEnvsVersion,
 
       "com.novocode" % "junit-interface" % "0.11" % "test",
-      "org.scala-js" %% "scalajs-js-envs-test-kit" % scalaJSVersion % "test",
+      "org.scala-js" %% "scalajs-js-envs-test-kit" % jsEnvsVersion % "test",
 
       /* See JSDOMNodeJSEnvTest.reactUnhandledExceptionHack.
        * We use intransitive() because we do not need the transitive

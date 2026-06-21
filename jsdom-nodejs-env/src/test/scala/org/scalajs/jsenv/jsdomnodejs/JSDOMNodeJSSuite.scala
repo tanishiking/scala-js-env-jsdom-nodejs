@@ -5,4 +5,8 @@ import org.scalajs.jsenv.test._
 import org.junit.runner.RunWith
 
 @RunWith(classOf[JSEnvSuiteRunner])
-class JSDOMNodeJSSuite extends JSEnvSuite(JSEnvSuiteConfig(new JSDOMNodeJSEnv))
+class JSDOMNodeJSSuite extends JSEnvSuite(
+  JSEnvSuiteConfig(new JSDOMNodeJSEnv) // currently, JSDomNodeJSEnv only supports Script
+    .withSupportsCommonJSModules(false)
+    .withSupportsESModules(false)
+)
